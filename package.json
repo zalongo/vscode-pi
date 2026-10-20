@@ -1,0 +1,93 @@
+{
+  "name": "pi-editor-terminal",
+  "displayName": "Pi — Terminal a la derecha",
+  "description": "Abre Pi en una terminal a la derecha del editor, en el directorio del proyecto activo.",
+  "version": "0.1.1",
+  "publisher": "local-pi",
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "keywords": [
+    "pi",
+    "terminal",
+    "ai"
+  ],
+  "main": "./src/extension.js",
+  "extensionKind": [
+    "workspace"
+  ],
+  "capabilities": {
+    "untrustedWorkspaces": {
+      "supported": false
+    },
+    "virtualWorkspaces": {
+      "supported": false
+    }
+  },
+  "contributes": {
+    "commands": [
+      {
+        "command": "pi.open",
+        "title": "Abrir Pi a la derecha",
+        "category": "Pi",
+        "icon": {
+          "light": "media/pi.svg",
+          "dark": "media/pi.svg"
+        }
+      }
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        { "id": "pi", "title": "Pi", "icon": "media/pi-activity.svg" }
+      ]
+    },
+    "views": {
+      "pi": [
+        { "id": "pi.launcher", "name": "Pi", "icon": "media/pi-activity.svg" }
+      ]
+    },
+    "viewsWelcome": [
+      {
+        "view": "pi.launcher",
+        "contents": "Abre Pi en una terminal a la derecha, en la carpeta del proyecto activo.\n[Abrir Pi a la derecha](command:pi.open)",
+        "when": "isWorkspaceTrusted"
+      },
+      {
+        "view": "pi.launcher",
+        "contents": "Confía en este proyecto para poder ejecutar Pi.",
+        "when": "!isWorkspaceTrusted"
+      }
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "pi.open",
+          "group": "navigation@1",
+          "when": "isWorkspaceTrusted && (view == workbench.explorer.fileView || view == pi.launcher)"
+        }
+      ],
+      "editor/title": [
+        {
+          "command": "pi.open",
+          "group": "navigation@1",
+          "when": "isWorkspaceTrusted"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "test": "node --test",
+    "check": "tsc -p .",
+    "package": "node -e \"require('node:fs').mkdirSync('dist', { recursive: true })\" && vsce package --out dist/pi-editor-terminal-0.1.1.vsix --allow-missing-repository"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "@types/vscode": "^1.85.0",
+    "@vscode/vsce": "^4.0.0",
+    "typescript": "^5.7.0"
+  }
+}
